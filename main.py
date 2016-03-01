@@ -2,8 +2,11 @@ from time import mktime
 from datetime import datetime
 import logging
 
+import endpoints
 from google.appengine.ext import ndb
+from endpoints_proto_datastore.ndb import EndpointsModel
 from webapp2_extras.appengine.auth.models import Unique
+from protorpc import remote
 
 from flask import Flask, render_template
 import feedparser
@@ -14,7 +17,8 @@ app = Flask(__name__)
 GOODREADS_RSS_URL = 'https://www.goodreads.com/quotes_of_the_day/rss'
 
 
-class Quote(ndb.Model):
+# class Quote(ndb.Model):
+class Quote(EndpointsModel):
     text = ndb.StringProperty(required=False)
     author = ndb.StringProperty(required=False)
     # author_link = db.StringProperty(required=False)
@@ -22,21 +26,14 @@ class Quote(ndb.Model):
     date = ndb.DateTimeProperty(required=False)
     date_modified = ndb.DateTimeProperty(auto_now_add=True)
 
-    @classmethod
-    def create_quote(cls, link, date):
-        uniques = [
-            'Quote.link.%s' % link,
-            'Quote.date.%s' % date,
-        ]
 
-        # transactionally create the unique quote based on date and link
-        # https://webapp-improved.appspot.com/_modules/webapp2_extras/appengine/auth/models.html#Unique
-        success, existing = Unique.create_multi(uniques)
-        if success:
-            # the unique values were created so we can save the quote
-            quote = Quote(date=date, link=link)
-            quote.put()
-            return quote
+@endpoints.api(name='quotesapi', version='v1',
+               description='quotes of the day api')
+class QuoteApi(remote.Service):
+
+    @Quote.query_method(path='quotes', name='quote.list')
+    def QuoteList(self, query):
+        return query
 
 
 def read_feed():
@@ -51,6 +48,8 @@ def read_feed():
 
         uniques = ['Quote.link.%s' % feed.link,
                    'Quote.date.%s' % clearer_date, ]
+        # transactionally create the unique quote based on date and link
+        # https://webapp-improved.appspot.com/_modules/webapp2_extras/appengine/auth/models.html#Unique
         success, existing = Unique.create_multi(uniques)
 
         if success:
@@ -81,6 +80,8 @@ def home():
     quotes = Quote.query().order(-Quote.date).fetch(7)
     return render_template('home.html', quotes=quotes)
 
+
+api = endpoints.api_server([QuoteApi], restricted=False)
 
 if __name__ == '__main__':
     app.run(debug=False)
