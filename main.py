@@ -33,7 +33,7 @@ class QuoteApi(remote.Service):
 
     @Quote.query_method(path='quotes', name='quote.list')
     def QuoteList(self, query):
-        return query
+        return query.order(-Quote.date)
 
 
 def read_feed():
