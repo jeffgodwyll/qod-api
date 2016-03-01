@@ -1,4 +1,4 @@
-application: qod
+application: qod-api
 version: 1
 runtime: python27
 api_version: 1
@@ -7,6 +7,18 @@ threadsafe: yes
 handlers:
 - url: .*
   script: main.app
+  secure: always
+
+libraries:
+- name: webapp2
+  version: '2.5.2'
+
+- name: pycrypto
+  version: '2.6'
+
+- name: endpoints
+  version: 1.0
+
 
 skip_files:
 - ^(.*/)?#.*#$
