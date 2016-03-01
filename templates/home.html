@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="static/styles.css">
+  <title></title>
+</head>
+<body>
+  <ul>
+  {% for quote in quotes %}
+    <ul> <blockquote>{{ quote.text }}</blockquote> by <i>{{ quote.author }}</i></ul>
+  {% endfor %}
+  </ul>
+</body>
+</html>
