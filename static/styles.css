@@ -28,3 +28,10 @@ q:before {
 q:after {
     content: close-quote;
 }
+
+.quote-card {
+    margin: 5px;
+}
+h4.mdl-card__title-text {
+    font-size: 18px;
+}
