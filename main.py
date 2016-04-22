@@ -17,7 +17,6 @@ app = Flask(__name__)
 GOODREADS_RSS_URL = 'https://www.goodreads.com/quotes_of_the_day/rss'
 
 
-# class Quote(ndb.Model):
 class Quote(EndpointsModel):
     text = ndb.StringProperty(required=False)
     author = ndb.StringProperty(required=False)
