@@ -69,6 +69,11 @@ def read_feed():
             logging.debug('Properties %r are not unique.' % existing)
 
 
+@app.template_filter()
+def dateformat(value, format='%a, %d %b, %Y'):
+    return value.strftime(format)
+
+
 @app.route('/cron')
 def cron():
     read_feed()
