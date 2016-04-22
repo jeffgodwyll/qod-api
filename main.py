@@ -39,8 +39,6 @@ def read_feed():
     feedparser._HTMLSanitizer.acceptable_elements = []  # cleans up all html tag
     feeds = feedparser.parse(GOODREADS_RSS_URL)
 
-    # q = db.Query('Quote')
-
     for feed in feeds.entries:
 
         clearer_date = datetime.fromtimestamp(mktime(feed.published_parsed))
