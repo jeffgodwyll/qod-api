@@ -22,6 +22,8 @@ libraries:
 - name: endpoints
   version: 1.0
 
+builtins:
+- remote_api: on
 
 skip_files:
 - ^(.*/)?#.*#$
