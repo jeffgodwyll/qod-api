@@ -1,6 +1,6 @@
 beautifulsoup4==4.4.1
 decorator==4.0.6
-Flask==0.10.1
+Flask==1.0
 ipython==4.0.1
 ipython-genutils==0.1.0
 itsdangerous==0.24
